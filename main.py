@@ -159,6 +159,7 @@ cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.7   # set a custom testing threshold
 predictor = DefaultPredictor(cfg)
 
 from detectron2.utils.visualizer import ColorMode
+
 dataset_dicts = get_balloon_dicts("balloon/val")
 for d in random.sample(dataset_dicts, 3):    
     im = cv2.imread(d["file_name"])
