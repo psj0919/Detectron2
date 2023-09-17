@@ -44,11 +44,11 @@ cv2_imshow(im) # 이미지 출력
 
 cfg = get_cfg() #get_cfg 클래스 호출
 # add project-specific config (e.g., TensorMask) here if you're not running a model in detectron2's core library
-cfg.merge_from_file(model_zoo.get_config_file("COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml"))
+cfg.merge_from_file(model_zoo.get_config_file("COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml")) # 사전학습된 mask_rcnn을 불러와 학습을 설정한다.
 cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.5  # set threshold for this model
 # Find a model from detectron2's model zoo. You can use the https://dl.fbaipublicfiles... url as well
-cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url("COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml")
-predictor = DefaultPredictor(cfg)
+cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url("COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml") # 사전에 학습된 가중치를 설정한다.
+predictor = DefaultPredictor(cfg) # 이미지를 입력으로 받아 모델을 실행하고 예측 결과를 반환한다.
 outputs = predictor(im)
 
 # look at the outputs. See https://detectron2.readthedocs.io/tutorials/models.html#model-output-format for specification
@@ -57,7 +57,7 @@ print(outputs["instances"].pred_boxes) # output이 예측한 Boxes 출력
 
 # We can use `Visualizer` to draw the predictions on the image.
 # 입력의 사진에서 예측된것을 바운딩 박스와 그 score로 하여 그림을 visulize 함
-v = Visualizer(im[:, :, ::-1], MetadataCatalog.get(cfg.DATASETS.TRAIN[0]), scale=1.2) 
+v = Visualizer(im[:, :, ::-1], MetadataCatalog.get(cfg.DATASETS.TRAIN[0]), scale=1.2) # 이미지와 객체탐지 결과를 시각화 하는데 사용
 out = v.draw_instance_predictions(outputs["instances"].to("cpu"))
 cv2_imshow(out.get_image()[:, :, ::-1])
 
